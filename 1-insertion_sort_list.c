@@ -26,11 +26,20 @@ void insertion_sort_list(listint_t **list)
 			{
 				tmp = tmp->prev;
 			}
+			c_node->prev = tmp;
 			if (tmp)
 			{
-				tmp-next = c_node;
-
-				(tmp->prev)->next = node;
+				c_node->next = tmp->next;
+				(tmp->next)->prev = c_node;
+				tmp->next = c_node;
+			}
+			else
+			{
+				c_node->next = *list;
+				(*list)->prev = c_node;
+				*list = c_node;
+			}
+			print_list(*list);
 		}
 		c_node = c_node->next;
 	}
