@@ -8,7 +8,7 @@
 
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *tmp, *c_node;
+	listint_t *prev, *c_node, *next;
 
 	c_node = *list;
 	if (c_node == NULL)
@@ -16,32 +16,24 @@ void insertion_sort_list(listint_t **list)
 	c_node = c_node->next;
 	while (c_node)
 	{
-		tmp = c_node->prev;
-		if (tmp->n > c_node->n)
+		prev = c_node->prev;
+		next = c_node->next;
+		while (prev && prev->n > c_node->n)
 		{
-			tmp->next = c_node->next;
+			prev->next = c_node->next;
 			if (c_node->next)
-				(c_node->next)->prev = tmp;
-			while (tmp && tmp->n > c_node->n)
-			{
-				tmp = tmp->prev;
-			}
-			c_node->prev = tmp;
-			if (tmp)
-			{
-				c_node->next = tmp->next;
-				(tmp->next)->prev = c_node;
-				tmp->next = c_node;
-			}
+				c_node->next->prev = prev;
+			c_node->next = prev;
+			c_node->prev = prev->prev;
+			if (prev->prev)
+				prev->prev->next = c_node;
 			else
-			{
-				c_node->next = *list;
-				(*list)->prev = c_node;
 				*list = c_node;
-			}
+			prev->prev = c_node;
 			print_list(*list);
+			prev = c_node->prev;
 		}
-		c_node = c_node->next;
+		c_node = next;
 	}
 }
 
